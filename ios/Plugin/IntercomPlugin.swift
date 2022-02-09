@@ -20,7 +20,7 @@ public class IntercomPlugin: CAPPlugin {
     )
 
     NotificationCenter.default.addObserver(self,
-      selector: #selector(self.onUnreadCountChange[notification:]),
+      selector: #selector(self.onUnreadCountChange),
           name: Notification.Name.IntercomUnreadConversationCountDidChange,
         object: nil
     )
@@ -34,10 +34,8 @@ public class IntercomPlugin: CAPPlugin {
     Intercom.setDeviceToken(deviceToken)
   }
 
-  @objc func onUnreadCountChange(notification: NSNotification) {
-    guard let unreadCoount = notification as? String else {
-      return Intercom.unreadConversationCount()
-    }
+  @objc func onUnreadCountChange() {
+    let unreadCount = Intercom.unreadConversationCount()
     self.notifyListeners("onUnreadCountChange", data: ["value":unreadCount])
   }
 
