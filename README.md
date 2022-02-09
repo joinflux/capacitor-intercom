@@ -71,13 +71,24 @@ npx cap sync
 
 ### Web Only
 
-For web, you must run `boot({ app_id: <app-id> })` to initialize.
+For web, you must run `boot({ appId: <app-id> })` to initialize.
 
 ```js
 import { Intercom } from '@houseninjadojo/capacitor-intercom';
 
-const myAppId = '12345';
-Intercom.boot({ app_id: myAppId });
+Intercom.boot({
+  appId: '12345',
+  email: 'test@example.com', // you can set user details on boot:
+  userId: '1234',            // see https://developers.intercom.com/installing-intercom/docs/intercom-javascript#intercomboot-intercomsettings
+});
+
+Intercom.registerIdentifiedUser({
+  email: 'test@example.com', // you can also set user details like the mobile SDKs
+  userId: '1234',
+});
+
+// show intercom
+Intercom.displayMessenger();
 
 ```
 

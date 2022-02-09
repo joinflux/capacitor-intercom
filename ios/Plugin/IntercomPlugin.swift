@@ -39,6 +39,10 @@ public class IntercomPlugin: CAPPlugin {
     self.notifyListeners("onUnreadCountChange", data: ["value":unreadCount])
   }
 
+  @objc func boot(_ call: CAPPluginCall) {
+    call.unimplemented("Not implemented on iOS. Use `registerIdentifiedUser` instead.")
+  }
+
   @objc func registerIdentifiedUser(_ call: CAPPluginCall) {
     let userId = call.getString("userId")
     let email = call.getString("email")

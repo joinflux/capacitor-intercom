@@ -1,4 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
+import { objectKeysCamelToSnakeCase } from './util';
 import { initialize as initializeWidget } from './widget';
 export class IntercomWeb extends WebPlugin {
     constructor() {
@@ -9,19 +10,22 @@ export class IntercomWeb extends WebPlugin {
         this.intercom = window.Intercom;
     }
     async boot(options) {
+        options = objectKeysCamelToSnakeCase(options);
         initializeWidget(options.app_id);
         this.intercom('boot', options);
         this.setupListeners();
         return Promise.resolve();
     }
     async registerIdentifiedUser(options) {
-        options;
-        throw this.unimplemented('Not implemented on web.');
+        options = objectKeysCamelToSnakeCase(options);
+        this.intercom('update', options);
+        return Promise.resolve();
     }
     async registerUnidentifiedUser() {
         throw this.unimplemented('Not implemented on web.');
     }
     async updateUser(options) {
+        options = objectKeysCamelToSnakeCase(options);
         this.intercom('update', options);
         return Promise.resolve();
     }

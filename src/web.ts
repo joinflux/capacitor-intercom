@@ -7,6 +7,7 @@ import type {
   IntercomUserUpdateOptions,
   UnreadConversationCount,
 } from './definitions';
+import { objectKeysCamelToSnakeCase } from './util';
 import { initialize as initializeWidget } from './widget';
 
 declare global {
@@ -27,6 +28,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async boot(options: IntercomSettings): Promise<void> {
+    options = objectKeysCamelToSnakeCase(options);
     initializeWidget(options.app_id);
     this.intercom('boot', options);
     this.setupListeners();
@@ -34,8 +36,9 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async registerIdentifiedUser(options: { userId?: string; email?: string }): Promise<void> {
-    options;
-    throw this.unimplemented('Not implemented on web.');
+    options = objectKeysCamelToSnakeCase(options);
+    this.intercom('update', options);
+    return Promise.resolve();
   }
 
   async registerUnidentifiedUser(): Promise<void> {
@@ -43,6 +46,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async updateUser(options: IntercomUserUpdateOptions): Promise<void> {
+    options = objectKeysCamelToSnakeCase(options);
     this.intercom('update', options);
     return Promise.resolve();
   }

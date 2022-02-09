@@ -50,6 +50,11 @@ public class IntercomPlugin extends Plugin {
     }
 
     @PluginMethod
+    public void boot(PluginCall call) {
+        call.unimplemented("Not implemented on Android. Use `registerIdentifiedUser` instead.");
+    }
+
+    @PluginMethod
     public void registerIdentifiedUser(PluginCall call) {
         String email = call.getString("email");
         String userId = call.getString("userId");

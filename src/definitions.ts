@@ -1,6 +1,7 @@
 import type { PluginListenerHandle } from '@capacitor/core';
 
 export interface IntercomPlugin {
+  boot(options: IntercomSettings): Promise<void>;
   registerIdentifiedUser(options: {
     userId?: string;
     email?: string;

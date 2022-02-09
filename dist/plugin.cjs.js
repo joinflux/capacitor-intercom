@@ -8,6 +8,18 @@ const Intercom$1 = core.registerPlugin('Intercom', {
     web: () => Promise.resolve().then(function () { return web; }).then(m => new m.IntercomWeb()),
 });
 
+const camelToSnakeCase = (str) => {
+    return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+};
+const objectKeysCamelToSnakeCase = (obj) => {
+    const dup = Object.assign({}, obj);
+    for (const k in dup) {
+        dup[camelToSnakeCase(k)] = dup[k];
+        delete dup[k];
+    }
+    return dup;
+};
+
 /**
  * Snippet to initialize the Intercom instance
  *
@@ -65,18 +77,22 @@ class IntercomWeb extends core.WebPlugin {
         this.intercom = window.Intercom;
     }
     async boot(options) {
+        options = objectKeysCamelToSnakeCase(options);
         initialize(options.app_id);
         this.intercom('boot', options);
         this.setupListeners();
         return Promise.resolve();
     }
     async registerIdentifiedUser(options) {
-        throw this.unimplemented('Not implemented on web.');
+        options = objectKeysCamelToSnakeCase(options);
+        this.intercom('update', options);
+        return Promise.resolve();
     }
     async registerUnidentifiedUser() {
         throw this.unimplemented('Not implemented on web.');
     }
     async updateUser(options) {
+        options = objectKeysCamelToSnakeCase(options);
         this.intercom('update', options);
         return Promise.resolve();
     }
