@@ -20,5 +20,5 @@ CAP_PLUGIN(IntercomPlugin, "Intercom",
            CAP_PLUGIN_METHOD(displayCarousel, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setUserHash, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setBottomPadding, CAPPluginReturnPromise);
-           CAP_PLUGIN_METHOD(unreadConversationCount, CAPPluginReturnPromise)
+           CAP_PLUGIN_METHOD(unreadConversationCount, CAPPluginReturnPromise);
 )
