@@ -61,12 +61,15 @@ export class IntercomWeb extends WebPlugin {
         options;
         throw this.unimplemented('Not implemented on web.');
     }
-    receivePush(notification) {
+    async receivePush(notification) {
         notification;
         throw this.unimplemented('Not implemented on web.');
     }
-    sendPushTokenToIntercom(options) {
+    async sendPushTokenToIntercom(options) {
         options;
+        throw this.unimplemented('Not implemented on web.');
+    }
+    async unreadConversationCount() {
         throw this.unimplemented('Not implemented on web.');
     }
 }

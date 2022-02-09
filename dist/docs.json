@@ -242,6 +242,18 @@
           "IntercomPushNotificationData"
         ],
         "slug": "receivepush"
+      },
+      {
+        "name": "unreadConversationCount",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "UnreadConversationCount"
+        ],
+        "slug": "unreadconversationcount"
       }
     ],
     "properties": []
@@ -402,6 +414,22 @@
           "docs": "",
           "complexTypes": [],
           "type": "number"
+        }
+      ]
+    },
+    {
+      "name": "UnreadConversationCount",
+      "slug": "unreadconversationcount",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "value",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
         }
       ]
     }

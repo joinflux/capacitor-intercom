@@ -20,7 +20,7 @@ export interface IntercomPlugin {
   setBottomPadding(options: { value: string }): Promise<void>;
   sendPushTokenToIntercom(options: { value: string }): Promise<void>;
   receivePush(notification: IntercomPushNotificationData): Promise<void>;
-  unreadConversationCount(): Promise<Object>;
+  unreadConversationCount(): Promise<UnreadConversationCount>;
 }
 
 export interface IntercomPushNotificationData {
@@ -47,4 +47,8 @@ export interface IntercomUserUpdateOptions {
   phone?: string;
   languageOverride?: string;
   customAttributes: { [key: string]: any };
+}
+
+export interface UnreadConversationCount {
+  value?: string;
 }

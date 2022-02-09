@@ -1,6 +1,6 @@
 {
-  "name": "@capacitor-community/intercom",
-  "version": "3.0.1",
+  "name": "@houseninjadojo/capacitor-intercom",
+  "version": "4.0.0",
   "description": "Enable Intercom features for Capacitor apps",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -26,7 +26,7 @@
     "contributors:add": "all-contributors add",
     "contributors:gen": "all-contributors generate"
   },
-  "author": "Stewan Silva",
+  "author": "House Ninja Engineering <engineering@houseninja.co>",
   "license": "MIT",
   "peerDependencies": {
     "@capacitor/core": "^3.0.0"
@@ -76,9 +76,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/capacitor-community/intercom"
+    "url": "https://github.com/houseninjadojo/capacitor-intercom"
   },
   "bugs": {
-    "url": "https://github.com/capacitor-community/intercom/issues"
+    "url": "https://github.com/houseninjadojo/capacitor-intercom/issues"
   }
 }

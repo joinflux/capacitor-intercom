@@ -63,10 +63,13 @@ class IntercomWeb extends core.WebPlugin {
     async setBottomPadding(options) {
         throw this.unimplemented('Not implemented on web.');
     }
-    receivePush(notification) {
+    async receivePush(notification) {
         throw this.unimplemented('Not implemented on web.');
     }
-    sendPushTokenToIntercom(options) {
+    async sendPushTokenToIntercom(options) {
+        throw this.unimplemented('Not implemented on web.');
+    }
+    async unreadConversationCount() {
         throw this.unimplemented('Not implemented on web.');
     }
 }

@@ -33,6 +33,7 @@ export interface IntercomPlugin {
         value: string;
     }): Promise<void>;
     receivePush(notification: IntercomPushNotificationData): Promise<void>;
+    unreadConversationCount(): Promise<UnreadConversationCount>;
 }
 export interface IntercomPushNotificationData {
     conversation_id: string;
@@ -59,4 +60,7 @@ export interface IntercomUserUpdateOptions {
     customAttributes: {
         [key: string]: any;
     };
+}
+export interface UnreadConversationCount {
+    value?: string;
 }

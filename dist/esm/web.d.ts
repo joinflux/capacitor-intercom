@@ -1,5 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
-import { IntercomPlugin, IntercomPushNotificationData, IntercomUserUpdateOptions } from './definitions';
+import type { IntercomPlugin, IntercomPushNotificationData, IntercomUserUpdateOptions, UnreadConversationCount } from './definitions';
 export declare class IntercomWeb extends WebPlugin implements IntercomPlugin {
     constructor();
     registerIdentifiedUser(options: {
@@ -36,6 +36,7 @@ export declare class IntercomWeb extends WebPlugin implements IntercomPlugin {
     sendPushTokenToIntercom(options: {
         value: string;
     }): Promise<void>;
+    unreadConversationCount(): Promise<UnreadConversationCount>;
 }
 declare const Intercom: IntercomWeb;
 export { Intercom };
