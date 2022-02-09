@@ -1,3 +1,4 @@
+import type { PluginListenerHandle } from '@capacitor/core';
 export interface IntercomPlugin {
     registerIdentifiedUser(options: {
         userId?: string;
@@ -34,6 +35,7 @@ export interface IntercomPlugin {
     }): Promise<void>;
     receivePush(notification: IntercomPushNotificationData): Promise<void>;
     unreadConversationCount(): Promise<UnreadConversationCount>;
+    addListener(eventName: 'onUnreadCountChange', listenerFunc: UnreadCountChangeListener): Promise<PluginListenerHandle> & PluginListenerHandle;
 }
 export interface IntercomPushNotificationData {
     conversation_id: string;
@@ -64,3 +66,4 @@ export interface IntercomUserUpdateOptions {
 export interface UnreadConversationCount {
     value?: string;
 }
+export declare type UnreadCountChangeListener = (state: UnreadConversationCount) => void;

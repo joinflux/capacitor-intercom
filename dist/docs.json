@@ -254,6 +254,30 @@
           "UnreadConversationCount"
         ],
         "slug": "unreadconversationcount"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'onUnreadCountChange', listenerFunc: UnreadCountChangeListener) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"onUnreadCountChange\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(state: UnreadConversationCount) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "UnreadCountChangeListener",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
       }
     ],
     "properties": []
@@ -430,6 +454,22 @@
           "docs": "",
           "complexTypes": [],
           "type": "string | undefined"
+        }
+      ]
+    },
+    {
+      "name": "PluginListenerHandle",
+      "slug": "pluginlistenerhandle",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "remove",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => any"
         }
       ]
     }

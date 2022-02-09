@@ -13,7 +13,17 @@ public class IntercomPlugin: CAPPlugin {
     let appId = getConfigValue("iosAppId") as? String ?? "ADD_IN_CAPACITOR_CONFIG_JSON"
     Intercom.setApiKey(apiKey, forAppId: appId)
 
-    NotificationCenter.default.addObserver(self, selector: #selector(self.didRegisterWithToken(notification:)), name: Notification.Name.capacitorDidRegisterForRemoteNotifications, object: nil)
+    NotificationCenter.default.addObserver(self,
+      selector: #selector(self.didRegisterWithToken(notification:)),
+          name: Notification.Name.capacitorDidRegisterForRemoteNotifications,
+        object: nil
+    )
+
+    NotificationCenter.default.addObserver(self,
+      selector: #selector(self.notifyListeners("onUnreadCountChange", data: [_:])),
+          name: Notification.Name.IntercomUnreadConversationCountDidChange,
+        object: nil
+    )
   }
 
 
