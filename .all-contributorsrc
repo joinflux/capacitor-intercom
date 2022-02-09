@@ -94,6 +94,17 @@
         "code",
         "maintenance"
       ]
+    },
+    {
+      "login": "mileszim",
+      "name": "Miles Zimmerman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1849508?v=4",
+      "profile": "https://github.com/mileszim",
+      "contributions": [
+        "code",
+        "doc",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7

@@ -12,7 +12,7 @@
   <a href="https://www.npmjs.com/package/@capacitor-community/intercom"><img src="https://img.shields.io/npm/dw/@capacitor-community/intercom?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/@capacitor-community/intercom"><img src="https://img.shields.io/npm/v/@capacitor-community/intercom?style=flat-square" /></a>
   <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="#contributors"><img src="https://img.shields.io/badge/all%20contributors-9-orange?style=flat-square" /></a>
+<a href="#contributors"><img src="https://img.shields.io/badge/all%20contributors-10-orange?style=flat-square" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 </p>
 
@@ -26,44 +26,18 @@
 
 We're starting fresh under an official org. If you were using the previous npm package `capacitor-intercom`, please update your package.json to `@capacitor-community/intercom`. Check out [changelog](/CHANGELOG.md) for more info.
 
-## Breaking changes from Capacitor v2 to v3
-
-- `UserUpdateOptions` option type becomes `IntercomUserUpdateOptions`
-- `IntercomPlugin` configuration key becomes `Intercom`
-- `android-apiKey` config key becomes `androidApiKey`
-- `android-appId` config key becomes `androidAppId`
-- `ios-apiKey` config key becomes `iosApiKey`
-- `ios-appId` config key becomes `iosAppId`
-- [Switch from CAPBridge to ApplicationDelegateProxy](https://capacitorjs.com/docs/updating/3-0#switch-from-capbridge-to-applicationdelegateproxy-in-application-events) in application events
-- remove the whole onCreate initialization from your app's `MainActivity.java`
-
-```diff
- public class MainActivity extends BridgeActivity {
--    @Override
--    public void onCreate(Bundle savedInstanceState) {
--        super.onCreate(savedInstanceState);
--
--        // Initializes the Bridge
--        this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
--            // Additional plugins you've installed go here
--            add(IntercomPlugin.class);
--        }});
--    }
- }
-```
-
 ## Installation
 
 Using npm:
 
 ```bash
-npm install @capacitor-community/intercom
+npm install @houseninjadojo/capacitor-intercom
 ```
 
 Using yarn:
 
 ```bash
-yarn add @capacitor-community/intercom
+yarn add @houseninjadojo/capacitor-intercom
 ```
 
 Sync native files:
@@ -90,6 +64,7 @@ npx cap sync
 - displayCarousel
 - setUserHash
 - setBottomPadding
+- unreadConversationCount
 
 ## Usage
 
@@ -98,20 +73,28 @@ import { Intercom } from '@capacitor-community/intercom';
 import { PushNotifications } from '@capacitor/push-notifications';
 
 // Register for push notifications from Intercom
-PushNotifications.register();
+await PushNotifications.register();
 
 // Register an indetified user
-Intercom.registerIdentifiedUser({ userId: 123456 }); // or email or both
+await Intercom.registerIdentifiedUser({ userId: 123456 }); // or email or both
 
 // Register a log event
-Intercom.logEvent({ name: 'my-event', data: { pi: 3.14 } });
+await Intercom.logEvent({ name: 'my-event', data: { pi: 3.14 } });
 
 // Display the message composer
-Intercom.displayMessageComposer({ message: 'Hello there!' });
+await Intercom.displayMessageComposer({ message: 'Hello there!' });
 
 // Identity Verification
 // https://developers.intercom.com/installing-intercom/docs/ios-identity-verification
-Intercom.setUserHash({ hmac: 'xyz' });
+await Intercom.setUserHash({ hmac: 'xyz' });
+
+// Get Unread Conversation Count
+await Intercom.unreadConversationCount();
+
+// Listen for unread conversation count to change
+Intercom.addListener('onUnreadCountChange', ({ value }) => {
+  console.log('conversation count is: ', value);
+});
 ```
 
 ## iOS setup
@@ -175,7 +158,7 @@ MIT
 
 ## Example
 
-- https://github.com/capacitor-community/intercom/blob/master/example
+- https://github.com/houseninjadojo/capacitor-community/blob/master/example
 
 ## Contributors ✨
 
@@ -197,6 +180,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/Jealvia"><img src="https://avatars.githubusercontent.com/u/28424830?v=4?s=75" width="75px;" alt=""/><br /><sub><b>Jealvia</b></sub></a><br /><a href="#maintenance-Jealvia" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://adamduren.com/"><img src="https://avatars.githubusercontent.com/u/581097?v=4?s=75" width="75px;" alt=""/><br /><sub><b>Adam Duren</b></sub></a><br /><a href="https://github.com/capacitor-community/intercom/commits?author=adamduren" title="Code">💻</a> <a href="#maintenance-adamduren" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/mileszim"><img src="https://avatars.githubusercontent.com/u/1849508?v=4?s=75" width="75px;" alt=""/><br /><sub><b>Miles Zimmerman</b></sub></a><br /><a href="https://github.com/capacitor-community/intercom/commits?author=mileszim" title="Code">💻</a> <a href="https://github.com/capacitor-community/intercom/commits?author=mileszim" title="Documentation">📖</a> <a href="#maintenance-mileszim" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
