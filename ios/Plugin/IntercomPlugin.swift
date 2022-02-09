@@ -20,8 +20,8 @@ public class IntercomPlugin: CAPPlugin {
     )
 
     NotificationCenter.default.addObserver(self,
-      selector: #selector(self.onUnreadCountChange),
-          name: Notification.Name.IntercomUnreadConversationCountDidChange,
+      selector: #selector(onUnreadConversationCountChange),
+          name: NSNotification.Name.IntercomUnreadConversationCountDidChange,
         object: nil
     )
   }
@@ -34,7 +34,7 @@ public class IntercomPlugin: CAPPlugin {
     Intercom.setDeviceToken(deviceToken)
   }
 
-  @objc func onUnreadCountChange() {
+  @objc func onUnreadConversationCountChange() {
     let unreadCount = Intercom.unreadConversationCount()
     self.notifyListeners("onUnreadCountChange", data: ["value":unreadCount])
   }
@@ -46,13 +46,13 @@ public class IntercomPlugin: CAPPlugin {
     if (userId != nil && email != nil) {
       Intercom.registerUser(withUserId: userId!, email: email!)
       call.resolve()
-    }else if (userId != nil) {
+    } else if (userId != nil) {
       Intercom.registerUser(withUserId: userId!)
       call.resolve()
-    }else if (email != nil) {
+    } else if (email != nil) {
       Intercom.registerUser(withEmail: email!)
       call.resolve()
-    }else{
+    } else {
       call.reject("No user registered. You must supply an email, userId or both")
     }
   }
