@@ -1,10 +1,18 @@
 import { WebPlugin } from '@capacitor/core';
+import { initialize as initializeWidget } from './widget';
 export class IntercomWeb extends WebPlugin {
     constructor() {
         super({
             name: 'Intercom',
             platforms: ['web'],
         });
+        this.intercom = window.Intercom;
+    }
+    async boot(options) {
+        initializeWidget(options.app_id);
+        this.intercom('boot', options);
+        this.setupListeners();
+        return Promise.resolve();
     }
     async registerIdentifiedUser(options) {
         options;
@@ -14,28 +22,31 @@ export class IntercomWeb extends WebPlugin {
         throw this.unimplemented('Not implemented on web.');
     }
     async updateUser(options) {
-        options;
-        throw this.unimplemented('Not implemented on web.');
+        this.intercom('update', options);
+        return Promise.resolve();
     }
     async logout() {
-        throw this.unimplemented('Not implemented on web.');
+        this.intercom('shutdown');
+        return Promise.resolve();
     }
     async logEvent(options) {
-        options;
-        throw this.unimplemented('Not implemented on web.');
+        this.intercom('trackEvent', options.name, options.data);
+        return Promise.resolve();
     }
     async displayMessenger() {
-        throw this.unimplemented('Not implemented on web.');
+        this.intercom('show');
+        return Promise.resolve();
     }
     async displayMessageComposer(options) {
-        options;
-        throw this.unimplemented('Not implemented on web.');
+        this.intercom('showNewMessage', options.message);
+        return Promise.resolve();
     }
     async displayHelpCenter() {
         throw this.unimplemented('Not implemented on web.');
     }
     async hideMessenger() {
-        throw this.unimplemented('Not implemented on web.');
+        this.intercom('hide');
+        return Promise.resolve();
     }
     async displayLauncher() {
         throw this.unimplemented('Not implemented on web.');
@@ -70,7 +81,16 @@ export class IntercomWeb extends WebPlugin {
         throw this.unimplemented('Not implemented on web.');
     }
     async unreadConversationCount() {
-        throw this.unimplemented('Not implemented on web.');
+        const payload = { value: this._unreadConversationCount };
+        return Promise.resolve(payload);
+    }
+    setupListeners() {
+        this.intercom('onHide', this.notifyListeners('onHide', null));
+        this.intercom('onShow', this.notifyListeners('onHide', null));
+        this.intercom('onUnreadCountChange', (unreadCount) => {
+            this._unreadConversationCount = unreadCount;
+            this.notifyListeners('onUnreadCountChange', unreadCount);
+        });
     }
 }
 const Intercom = new IntercomWeb();

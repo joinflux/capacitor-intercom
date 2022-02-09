@@ -48,6 +48,7 @@ npx cap sync
 
 ## API
 
+- boot
 - registerIdentifiedUser
 - registerUnidentifiedUser
 - updateUser
@@ -68,8 +69,22 @@ npx cap sync
 
 ## Usage
 
+### Web Only
+
+For web, you must run `boot({ app_id: <app-id> })` to initialize.
+
 ```js
-import { Intercom } from '@capacitor-community/intercom';
+import { Intercom } from '@houseninjadojo/capacitor-intercom';
+
+const myAppId = '12345';
+Intercom.boot({ app_id: myAppId });
+
+```
+
+### Web, iOS, Android
+
+```js
+import { Intercom } from '@houseninjadojo/capacitor-intercom';
 import { PushNotifications } from '@capacitor/push-notifications';
 
 // Register for push notifications from Intercom

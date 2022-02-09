@@ -1,7 +1,15 @@
 import { WebPlugin } from '@capacitor/core';
-import type { IntercomPlugin, IntercomPushNotificationData, IntercomUserUpdateOptions, UnreadConversationCount } from './definitions';
+import type { IntercomPlugin, IntercomPushNotificationData, IntercomSettings, IntercomUserUpdateOptions, UnreadConversationCount } from './definitions';
+declare global {
+    interface Window {
+        Intercom: any;
+    }
+}
 export declare class IntercomWeb extends WebPlugin implements IntercomPlugin {
+    private intercom;
+    private _unreadConversationCount;
     constructor();
+    boot(options: IntercomSettings): Promise<void>;
     registerIdentifiedUser(options: {
         userId?: string;
         email?: string;
@@ -37,6 +45,7 @@ export declare class IntercomWeb extends WebPlugin implements IntercomPlugin {
         value: string;
     }): Promise<void>;
     unreadConversationCount(): Promise<UnreadConversationCount>;
+    private setupListeners;
 }
 declare const Intercom: IntercomWeb;
 export { Intercom };

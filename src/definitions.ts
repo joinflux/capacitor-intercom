@@ -60,3 +60,52 @@ export interface UnreadConversationCount {
 }
 
 export type UnreadCountChangeListener = (state: UnreadConversationCount) => void;
+
+export interface IntercomSettings {
+  // messenger attributes
+  app_id: string;
+  custom_launcher_selector?: string;
+  alignment?: string;
+  vertical_padding?: number;
+  horizontal_padding?: number;
+  hide_default_launcher?: boolean;
+  session_duration?: number;
+  action_color?: string;
+  background_color?: string;
+
+  // data attributes
+  email?: string;
+  user_id?: string;
+  created_at?: Date;
+  name?: string;
+  phone?: string;
+  last_request_at: Date;
+  unsubscribed_from_emails?: boolean;
+  language_override?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_source?: string;
+  utm_term?: string;
+  avatar?: IntercomAvatar;
+  user_hash?: string;
+  company?: IntercomCompany;
+  companies?: IntercomCompany[];
+}
+
+export interface IntercomAvatar {
+  type: string;
+  image_url: string;
+}
+
+export interface IntercomCompany {
+  company_id: string;
+  name: string;
+  created_at?: Date;
+  remote_created_at?: Date;
+  plan?: string;
+  monthly_spend?: number;
+  user_count?: number;
+  size?: number;
+  website?: string;
+  industry?: string;
+}
