@@ -171,4 +171,11 @@ public class IntercomPlugin: CAPPlugin {
         call.reject("Enter a value for padding bottom")
       }
   }
+
+  @objc func unreadConversationCount(_ call: CAPPluginCall) {
+    let value = Intercom.unreadConversationCount()
+    call.resolve([
+      "value": value
+    ])
+  }
 }

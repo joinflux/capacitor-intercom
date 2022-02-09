@@ -218,6 +218,14 @@ public class IntercomPlugin extends Plugin {
         }
     }
 
+    @PluginMethod
+    public void getUnreadConversationCount(PluginCall call) {
+        String stringValue = Intercom.client().getUnreadConversationCount();
+        JSObject ret = new JSObject();
+        ret.put("value", stringValue);
+        call.resolve(ret);
+    }
+
     private void setUpIntercom() {
         try {
             // get config
