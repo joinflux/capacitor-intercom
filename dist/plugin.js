@@ -71,18 +71,17 @@ var capacitorIntercom = (function (exports, core) {
                 name: 'Intercom',
                 platforms: ['web'],
             });
-            this.intercom = window.Intercom;
         }
         async boot(options) {
             options = objectKeysCamelToSnakeCase(options);
             initialize(options.app_id);
-            this.intercom('boot', options);
+            window.Intercom('boot', options);
             this.setupListeners();
             return Promise.resolve();
         }
         async registerIdentifiedUser(options) {
             options = objectKeysCamelToSnakeCase(options);
-            this.intercom('update', options);
+            window.Intercom('update', options);
             return Promise.resolve();
         }
         async registerUnidentifiedUser() {
@@ -90,30 +89,30 @@ var capacitorIntercom = (function (exports, core) {
         }
         async updateUser(options) {
             options = objectKeysCamelToSnakeCase(options);
-            this.intercom('update', options);
+            window.Intercom('update', options);
             return Promise.resolve();
         }
         async logout() {
-            this.intercom('shutdown');
+            window.Intercom('shutdown');
             return Promise.resolve();
         }
         async logEvent(options) {
-            this.intercom('trackEvent', options.name, options.data);
+            window.Intercom('trackEvent', options.name, options.data);
             return Promise.resolve();
         }
         async displayMessenger() {
-            this.intercom('show');
+            window.Intercom('show');
             return Promise.resolve();
         }
         async displayMessageComposer(options) {
-            this.intercom('showNewMessage', options.message);
+            window.Intercom('showNewMessage', options.message);
             return Promise.resolve();
         }
         async displayHelpCenter() {
             throw this.unimplemented('Not implemented on web.');
         }
         async hideMessenger() {
-            this.intercom('hide');
+            window.Intercom('hide');
             return Promise.resolve();
         }
         async displayLauncher() {
@@ -148,9 +147,9 @@ var capacitorIntercom = (function (exports, core) {
             return Promise.resolve(payload);
         }
         setupListeners() {
-            this.intercom('onHide', this.notifyListeners('onHide', null));
-            this.intercom('onShow', this.notifyListeners('onHide', null));
-            this.intercom('onUnreadCountChange', (unreadCount) => {
+            window.Intercom('onHide', this.notifyListeners('onHide', null));
+            window.Intercom('onShow', this.notifyListeners('onHide', null));
+            window.Intercom('onUnreadCountChange', (unreadCount) => {
                 this._unreadConversationCount = unreadCount;
                 this.notifyListeners('onUnreadCountChange', unreadCount);
             });

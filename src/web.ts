@@ -17,7 +17,6 @@ declare global {
 }
 
 export class IntercomWeb extends WebPlugin implements IntercomPlugin {
-  private intercom: any | undefined = window.Intercom;
   private _unreadConversationCount: string | undefined;
 
   constructor() {
@@ -30,14 +29,14 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   async boot(options: IntercomSettings): Promise<void> {
     options = objectKeysCamelToSnakeCase(options);
     initializeWidget(options.app_id);
-    this.intercom('boot', options);
+    window.Intercom('boot', options);
     this.setupListeners();
     return Promise.resolve();
   }
 
   async registerIdentifiedUser(options: { userId?: string; email?: string }): Promise<void> {
     options = objectKeysCamelToSnakeCase(options);
-    this.intercom('update', options);
+    window.Intercom('update', options);
     return Promise.resolve();
   }
 
@@ -47,27 +46,27 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
 
   async updateUser(options: IntercomUserUpdateOptions): Promise<void> {
     options = objectKeysCamelToSnakeCase(options);
-    this.intercom('update', options);
+    window.Intercom('update', options);
     return Promise.resolve();
   }
 
   async logout(): Promise<void> {
-    this.intercom('shutdown');
+    window.Intercom('shutdown');
     return Promise.resolve();
   }
 
   async logEvent(options: { name: string; data?: any }): Promise<void> {
-    this.intercom('trackEvent', options.name, options.data);
+    window.Intercom('trackEvent', options.name, options.data);
     return Promise.resolve();
   }
 
   async displayMessenger(): Promise<void> {
-    this.intercom('show');
+    window.Intercom('show');
     return Promise.resolve();
   }
 
   async displayMessageComposer(options: { message: string }): Promise<void> {
-    this.intercom('showNewMessage', options.message);
+    window.Intercom('showNewMessage', options.message);
     return Promise.resolve();
   }
 
@@ -76,7 +75,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   async hideMessenger(): Promise<void> {
-    this.intercom('hide');
+    window.Intercom('hide');
     return Promise.resolve();
   }
 
@@ -127,9 +126,9 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   }
 
   private setupListeners(): void {
-    this.intercom('onHide', this.notifyListeners('onHide', null));
-    this.intercom('onShow', this.notifyListeners('onHide', null));
-    this.intercom('onUnreadCountChange', (unreadCount: string) => {
+    window.Intercom('onHide', this.notifyListeners('onHide', null));
+    window.Intercom('onShow', this.notifyListeners('onHide', null));
+    window.Intercom('onUnreadCountChange', (unreadCount: string) => {
       this._unreadConversationCount = unreadCount;
       this.notifyListeners('onUnreadCountChange', unreadCount)
     });

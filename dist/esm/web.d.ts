@@ -6,7 +6,6 @@ declare global {
     }
 }
 export declare class IntercomWeb extends WebPlugin implements IntercomPlugin {
-    private intercom;
     private _unreadConversationCount;
     constructor();
     boot(options: IntercomSettings): Promise<void>;
