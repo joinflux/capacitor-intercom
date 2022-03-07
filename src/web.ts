@@ -20,10 +20,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
   private _unreadConversationCount: string | undefined;
 
   constructor() {
-    super({
-      name: 'Intercom',
-      platforms: ['web'],
-    });
+    super();
   }
 
   async boot(options: IntercomSettings): Promise<void> {

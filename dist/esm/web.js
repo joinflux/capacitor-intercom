@@ -3,10 +3,7 @@ import { objectKeysCamelToSnakeCase } from './util';
 import { initialize as initializeWidget } from './widget';
 export class IntercomWeb extends WebPlugin {
     constructor() {
-        super({
-            name: 'Intercom',
-            platforms: ['web'],
-        });
+        super();
     }
     async boot(options) {
         options = objectKeysCamelToSnakeCase(options);
