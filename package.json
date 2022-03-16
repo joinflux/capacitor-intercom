@@ -1,6 +1,6 @@
 {
-  "name": "@houseninjadojo/capacitor-intercom",
-  "version": "5.0.1",
+  "name": "@joinflux/capacitor-intercom",
+  "version": "1.0.0",
   "description": "Enable Intercom features for Capacitor apps",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -26,7 +26,7 @@
     "contributors:add": "all-contributors add",
     "contributors:gen": "all-contributors generate"
   },
-  "author": "House Ninja Engineering <engineering@houseninja.co>",
+  "author": "Gustavo Hoirisch <gus@flux.finance>",
   "license": "MIT",
   "peerDependencies": {
     "@capacitor/core": "^3.0.0"
@@ -54,7 +54,7 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "HouseninjadojoCapacitorIntercom.podspec"
+    "JoinfluxCapacitorIntercom.podspec"
   ],
   "keywords": [
     "capacitor",
@@ -76,9 +76,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/houseninjadojo/capacitor-intercom"
+    "url": "https://github.com/joinflux/capacitor-intercom"
   },
   "bugs": {
-    "url": "https://github.com/houseninjadojo/capacitor-intercom/issues"
+    "url": "https://github.com/joinflux/capacitor-intercom/issues"
   }
 }
