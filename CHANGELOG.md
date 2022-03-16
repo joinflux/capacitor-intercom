@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/joinflux/capacitor-intercom/compare/1.0.0...1.0.1) (2022-03-16)
+
 ### [3.0.1](https://github.com/capacitor-community/intercom/compare/v3.0.0...v3.0.1) (2021-10-13)
 
 
