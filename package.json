@@ -54,7 +54,7 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "CapacitorCommunityIntercom.podspec"
+    "HouseninjadojoCapacitorIntercom.podspec"
   ],
   "keywords": [
     "capacitor",

@@ -44,7 +44,7 @@ public class IntercomPlugin extends Plugin {
                 //We also initialize intercom here just in case it has died. If Intercom is already set up, this won't do anything.
                 setUpIntercom();
                 Intercom.client().handlePushMessage();
-                Intercom.client().addUnreadConversationCountListener(onUnreadCountChange);
+                //Intercom.client().addUnreadConversationCountListener(onUnreadCountChange);
             }
         });
     }
@@ -226,9 +226,9 @@ public class IntercomPlugin extends Plugin {
 
     @PluginMethod
     public void getUnreadConversationCount(PluginCall call) {
-        String stringValue = Intercom.client().getUnreadConversationCount();
+        Integer count = Intercom.client().getUnreadConversationCount();
         JSObject ret = new JSObject();
-        ret.put("value", stringValue);
+        ret.put("value", count);
         call.resolve(ret);
     }
 
