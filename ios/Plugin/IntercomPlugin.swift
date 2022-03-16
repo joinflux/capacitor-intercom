@@ -20,7 +20,7 @@ public class IntercomPlugin: CAPPlugin {
     )
 
     NotificationCenter.default.addObserver(self,
-      selector: #selector(self.onUnreadConversationCountChange(notification:)),
+      selector: #selector(self.onUnreadConversationCountChange),
           name: NSNotification.Name.IntercomUnreadConversationCountDidChange,
         object: nil
     )
