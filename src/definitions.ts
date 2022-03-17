@@ -60,7 +60,9 @@ export interface UnreadConversationCount {
   value?: string;
 }
 
-export type UnreadCountChangeListener = (state: UnreadConversationCount) => void;
+export type UnreadCountChangeListener = (
+  state: UnreadConversationCount,
+) => void;
 
 export interface IntercomSettings {
   // messenger attributes
@@ -80,7 +82,7 @@ export interface IntercomSettings {
   created_at?: Date;
   name?: string;
   phone?: string;
-  last_request_at: Date;
+  last_request_at?: Date;
   unsubscribed_from_emails?: boolean;
   language_override?: string;
   utm_campaign?: string;
@@ -110,3 +112,4 @@ export interface IntercomCompany {
   website?: string;
   industry?: string;
 }
+
