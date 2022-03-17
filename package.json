@@ -20,11 +20,9 @@
     "docgen": "docgen --api IntercomPlugin --output-readme README.md --output-json dist/docs.json",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build",
-    "release:patch": "standard-version release --release-as patch",
-    "release:minor": "standard-version release --release-as minor",
-    "release:major": "standard-version release --release-as major",
-    "contributors:add": "all-contributors add",
-    "contributors:gen": "all-contributors generate"
+    "release:patch": "standard-version release --release-as patch -t ''",
+    "release:minor": "standard-version release --release-as minor -t ''",
+    "release:major": "standard-version release --release-as major -t ''"
   },
   "author": "Gustavo Hoirisch <gus@flux.finance>",
   "license": "MIT",
@@ -58,6 +56,7 @@
   ],
   "keywords": [
     "capacitor",
+    "intercom",
     "plugin",
     "native"
   ],
