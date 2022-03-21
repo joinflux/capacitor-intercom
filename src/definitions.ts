@@ -53,7 +53,7 @@ export interface IntercomUserUpdateOptions {
   name?: string;
   phone?: string;
   languageOverride?: string;
-  customAttributes: { [key: string]: any };
+  customAttributes?: { [key: string]: any };
 }
 
 export interface UnreadConversationCount {
@@ -112,4 +112,3 @@ export interface IntercomCompany {
   website?: string;
   industry?: string;
 }
-
