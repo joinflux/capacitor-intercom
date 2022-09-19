@@ -1,4 +1,4 @@
-package com.getcapacitor.community.intercom;
+package com.joinflux.flux.intercom;
 
 import com.getcapacitor.CapConfig;
 import com.getcapacitor.JSArray;
