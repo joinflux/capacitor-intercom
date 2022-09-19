@@ -9,21 +9,20 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.annotation.Permission;
-
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.IntercomPushManager;
+import io.intercom.android.sdk.UserAttributes;
+import io.intercom.android.sdk.identity.Registration;
+import io.intercom.android.sdk.push.IntercomPushClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import io.intercom.android.sdk.Intercom;
-import io.intercom.android.sdk.IntercomPushManager;
-import io.intercom.android.sdk.UserAttributes;
-import io.intercom.android.sdk.identity.Registration;
-import io.intercom.android.sdk.push.IntercomPushClient;
-
 @CapacitorPlugin(name = "Intercom", permissions = @Permission(strings = {}, alias = "receive"))
 public class IntercomPlugin extends Plugin {
+
     private final IntercomPushClient intercomPushClient = new IntercomPushClient();
 
     @Override
@@ -38,15 +37,19 @@ public class IntercomPlugin extends Plugin {
     @Override
     public void handleOnStart() {
         super.handleOnStart();
-        bridge.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //We also initialize intercom here just in case it has died. If Intercom is already set up, this won't do anything.
-                setUpIntercom();
-                Intercom.client().handlePushMessage();
-                //Intercom.client().addUnreadConversationCountListener(onUnreadCountChange);
-            }
-        });
+        bridge
+            .getActivity()
+            .runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        //We also initialize intercom here just in case it has died. If Intercom is already set up, this won't do anything.
+                        setUpIntercom();
+                        Intercom.client().handlePushMessage();
+                        //Intercom.client().addUnreadConversationCountListener(onUnreadCountChange);
+                    }
+                }
+            );
     }
 
     @PluginMethod
