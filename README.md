@@ -15,6 +15,10 @@
 
 ## Installation
 
+### Capacitor 3 vs Capacitor 4
+* Use version 1.0.3 or lower for Capacitor 3
+* Version >2.0.0 will target the Capacitor 4
+
 Using npm:
 
 ```bash
