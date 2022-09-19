@@ -14,5 +14,4 @@ end
 
 target 'PluginTests' do
   capacitor_pods
-  pod 'Intercom', '~> 11.0'
 end
