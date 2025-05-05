@@ -1,5 +1,7 @@
 package com.joinflux.flux.intercom;
 
+import androidx.annotation.NonNull;
+
 import com.getcapacitor.CapConfig;
 import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
@@ -9,11 +11,16 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.annotation.Permission;
+
 import io.intercom.android.sdk.Intercom;
-import io.intercom.android.sdk.IntercomPushManager;
+import io.intercom.android.sdk.IntercomContent;
+import io.intercom.android.sdk.IntercomError;
+import io.intercom.android.sdk.IntercomSpace;
+import io.intercom.android.sdk.IntercomStatusCallback;
 import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
 import io.intercom.android.sdk.push.IntercomPushClient;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,6 +31,42 @@ import java.util.Map;
 public class IntercomPlugin extends Plugin {
 
     private final IntercomPushClient intercomPushClient = new IntercomPushClient();
+
+    private static Map<String, Object> mapFromJSON(JSObject jsonObject) {
+        if (jsonObject == null) {
+            return null;
+        }
+        Map<String, Object> map = new HashMap<>();
+        Iterator<String> keysIter = jsonObject.keys();
+        while (keysIter.hasNext()) {
+            String key = keysIter.next();
+            Object value = getObject(jsonObject.opt(key));
+            if (value != null) {
+                map.put(key, value);
+            }
+        }
+        return map;
+    }
+
+    private static Object getObject(Object value) {
+        if (value instanceof JSObject) {
+            value = mapFromJSON((JSObject) value);
+        } else if (value instanceof JSArray) {
+            value = listFromJSON((JSArray) value);
+        }
+        return value;
+    }
+
+    private static List<Object> listFromJSON(JSArray jsonArray) {
+        List<Object> list = new ArrayList<>();
+        for (int i = 0, count = jsonArray.length(); i < count; i++) {
+            Object value = getObject(jsonArray.opt(i));
+            if (value != null) {
+                list.add(value);
+            }
+        }
+        return list;
+    }
 
     @Override
     public void load() {
@@ -38,23 +81,18 @@ public class IntercomPlugin extends Plugin {
     public void handleOnStart() {
         super.handleOnStart();
         bridge
-            .getActivity()
-            .runOnUiThread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        //We also initialize intercom here just in case it has died. If Intercom is already set up, this won't do anything.
-                        setUpIntercom();
-                        Intercom.client().handlePushMessage();
-                        //Intercom.client().addUnreadConversationCountListener(onUnreadCountChange);
-                    }
-                }
-            );
-    }
-
-    @PluginMethod
-    public void boot(PluginCall call) {
-        call.unimplemented("Not implemented on Android. Use `registerIdentifiedUser` instead.");
+                .getActivity()
+                .runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                //We also initialize intercom here just in case it has died. If Intercom is already set up, this won't do anything.
+                                setUpIntercom();
+                                Intercom.client().handlePushMessage();
+                                //Intercom.client().addUnreadConversationCountListener(onUnreadCountChange);
+                            }
+                        }
+                );
     }
 
     @PluginMethod
@@ -62,51 +100,74 @@ public class IntercomPlugin extends Plugin {
         String email = call.getString("email");
         String userId = call.getString("userId");
 
-        Registration registration = new Registration();
+        assert userId != null;
+        assert email != null;
 
-        if (email != null && email.length() > 0) {
-            registration = registration.withEmail(email);
-        }
-        if (userId != null && userId.length() > 0) {
-            registration = registration.withUserId(userId);
-        }
-        Intercom.client().registerIdentifiedUser(registration);
-        call.resolve();
+        Registration registration = Registration.create().withUserId(userId).withEmail(email);
+        Intercom.client().loginIdentifiedUser(registration, new IntercomStatusCallback() {
+            @Override
+            public void onSuccess() {
+                call.resolve();
+            }
+
+            @Override
+            public void onFailure(@NonNull IntercomError intercomError) {
+                call.reject(String.valueOf(intercomError));
+            }
+        });
     }
 
     @PluginMethod
     public void registerUnidentifiedUser(PluginCall call) {
-        Intercom.client().registerUnidentifiedUser();
-        call.resolve();
+        Intercom.client().loginUnidentifiedUser(new IntercomStatusCallback() {
+            @Override
+            public void onSuccess() {
+                call.resolve();
+            }
+
+            @Override
+            public void onFailure(@NonNull IntercomError intercomError) {
+                call.reject(String.valueOf(intercomError));
+            }
+        });
     }
 
     @PluginMethod
     public void updateUser(PluginCall call) {
         UserAttributes.Builder builder = new UserAttributes.Builder();
         String userId = call.getString("userId");
-        if (userId != null && userId.length() > 0) {
+        if (userId != null && !userId.isEmpty()) {
             builder.withUserId(userId);
         }
         String email = call.getString("email");
-        if (email != null && email.length() > 0) {
+        if (email != null && !email.isEmpty()) {
             builder.withEmail(email);
         }
         String name = call.getString("name");
-        if (name != null && name.length() > 0) {
+        if (name != null && !name.isEmpty()) {
             builder.withName(name);
         }
         String phone = call.getString("phone");
-        if (phone != null && phone.length() > 0) {
+        if (phone != null && !phone.isEmpty()) {
             builder.withPhone(phone);
         }
         String languageOverride = call.getString("languageOverride");
-        if (languageOverride != null && languageOverride.length() > 0) {
+        if (languageOverride != null && !languageOverride.isEmpty()) {
             builder.withLanguageOverride(languageOverride);
         }
         Map<String, Object> customAttributes = mapFromJSON(call.getObject("customAttributes"));
         builder.withCustomAttributes(customAttributes);
-        Intercom.client().updateUser(builder.build());
-        call.resolve();
+        Intercom.client().updateUser(builder.build(), new IntercomStatusCallback() {
+            @Override
+            public void onSuccess() {
+                call.resolve();
+            }
+
+            @Override
+            public void onFailure(@NonNull IntercomError intercomError) {
+                call.reject(String.valueOf(intercomError));
+            }
+        });
     }
 
     @PluginMethod
@@ -120,6 +181,8 @@ public class IntercomPlugin extends Plugin {
         String eventName = call.getString("name");
         Map<String, Object> metaData = mapFromJSON(call.getObject("data"));
 
+        assert eventName != null;
+
         if (metaData == null) {
             Intercom.client().logEvent(eventName);
         } else {
@@ -131,7 +194,7 @@ public class IntercomPlugin extends Plugin {
 
     @PluginMethod
     public void displayMessenger(PluginCall call) {
-        Intercom.client().displayMessenger();
+        Intercom.client().present(IntercomSpace.Messages);
         call.resolve();
     }
 
@@ -144,7 +207,7 @@ public class IntercomPlugin extends Plugin {
 
     @PluginMethod
     public void displayHelpCenter(PluginCall call) {
-        Intercom.client().displayHelpCenter();
+        Intercom.client().present(IntercomSpace.HelpCenter);
         call.resolve();
     }
 
@@ -181,13 +244,15 @@ public class IntercomPlugin extends Plugin {
     @PluginMethod
     public void displayCarousel(PluginCall call) {
         String carouselId = call.getString("carouselId");
-        Intercom.client().displayCarousel(carouselId);
+        assert carouselId != null;
+        Intercom.client().presentContent(new IntercomContent.Carousel(carouselId));
         call.resolve();
     }
 
     @PluginMethod
     public void setUserHash(PluginCall call) {
         String hmac = call.getString("hmac");
+        assert hmac != null;
         Intercom.client().setUserHash(hmac);
         call.resolve();
     }
@@ -204,6 +269,7 @@ public class IntercomPlugin extends Plugin {
     public void sendPushTokenToIntercom(PluginCall call) {
         String token = call.getString("value");
         try {
+            assert token != null;
             intercomPushClient.sendTokenToIntercom(this.getActivity().getApplication(), token);
             call.resolve();
         } catch (Exception e) {
@@ -217,6 +283,7 @@ public class IntercomPlugin extends Plugin {
             JSObject notificationData = call.getData();
             Map message = mapFromJSON(notificationData);
             if (intercomPushClient.isIntercomPush(message)) {
+                intercomPushClient.handlePush(this.getActivity().getApplication(), message);
                 intercomPushClient.handlePush(this.getActivity().getApplication(), message);
                 call.resolve();
             } else {
@@ -247,42 +314,6 @@ public class IntercomPlugin extends Plugin {
         } catch (Exception e) {
             Logger.error("Intercom", "ERROR: Something went wrong when initializing Intercom. Check your configurations", e);
         }
-    }
-
-    private static Map<String, Object> mapFromJSON(JSObject jsonObject) {
-        if (jsonObject == null) {
-            return null;
-        }
-        Map<String, Object> map = new HashMap<>();
-        Iterator<String> keysIter = jsonObject.keys();
-        while (keysIter.hasNext()) {
-            String key = keysIter.next();
-            Object value = getObject(jsonObject.opt(key));
-            if (value != null) {
-                map.put(key, value);
-            }
-        }
-        return map;
-    }
-
-    private static Object getObject(Object value) {
-        if (value instanceof JSObject) {
-            value = mapFromJSON((JSObject) value);
-        } else if (value instanceof JSArray) {
-            value = listFromJSON((JSArray) value);
-        }
-        return value;
-    }
-
-    private static List<Object> listFromJSON(JSArray jsonArray) {
-        List<Object> list = new ArrayList<>();
-        for (int i = 0, count = jsonArray.length(); i < count; i++) {
-            Object value = getObject(jsonArray.opt(i));
-            if (value != null) {
-                list.add(value);
-            }
-        }
-        return list;
     }
 
     private void onUnreadCountChange(String unreadCount) {
