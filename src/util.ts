@@ -9,4 +9,4 @@ export const objectKeysCamelToSnakeCase = (obj: any): any => {
     delete dup[k];
   }
   return dup;
-}
+};

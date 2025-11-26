@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import type { IntercomSettings } from './definitions';
 
@@ -11,7 +12,7 @@ declare global {
 
 /**
  * Snippet to initialize the Intercom instance
- * 
+ *
  * @see {@link https://github.com/devrnt/react-use-intercom/blob/master/src/initialize.ts}
  * @see {@link https://developers.intercom.com/installing-intercom/docs/basic-javascript}
  *
@@ -26,16 +27,16 @@ const initialize = (appId: string, timeout = 0): void => {
     ic('update', w.intercomSettings);
   } else {
     const d = document;
-    const i = function(...args: any[]) {
+    const i = function (...args: any[]) {
       i.c(args);
     };
     i.q = [];
-    i.c = function(...args: any[]) {
+    i.c = function (...args: any[]) {
       i.q.push(args);
     };
     w.Intercom = i;
-    const l = function() {
-      setTimeout(function() {
+    const l = function () {
+      setTimeout(function () {
         const s = d.createElement('script');
         s.type = 'text/javascript';
         s.async = true;
