@@ -27,7 +27,7 @@ export interface IntercomPlugin {
   addListener(
     eventName: 'onUnreadCountChange',
     listenerFunc: UnreadCountChangeListener,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 }
 
 export interface IntercomPushNotificationData {
