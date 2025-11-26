@@ -15,9 +15,17 @@
 
 ## Installation
 
-### Capacitor 3 vs Capacitor 4
+### Capacitor 6
+* Version > 6.0.0 will target Capacitor 6
+
+### Capacitor 5
+* Version > 4.0.0 will target Capacitor 5
+
+### Capacitor 4
+* Version > 2.0.0 will target Capacitor 4
+
+### Capacitor 3 
 * Use version 1.0.3 or lower for Capacitor 3
-* Version >2.0.0 will target Capacitor 4
 
 Using npm:
 

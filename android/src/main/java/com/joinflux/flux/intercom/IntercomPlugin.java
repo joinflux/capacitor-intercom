@@ -1,7 +1,6 @@
 package com.joinflux.flux.intercom;
 
 import androidx.annotation.NonNull;
-
 import com.getcapacitor.CapConfig;
 import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
@@ -11,7 +10,6 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.annotation.Permission;
-
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.IntercomContent;
 import io.intercom.android.sdk.IntercomError;
@@ -20,7 +18,6 @@ import io.intercom.android.sdk.IntercomStatusCallback;
 import io.intercom.android.sdk.UserAttributes;
 import io.intercom.android.sdk.identity.Registration;
 import io.intercom.android.sdk.push.IntercomPushClient;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,18 +78,18 @@ public class IntercomPlugin extends Plugin {
     public void handleOnStart() {
         super.handleOnStart();
         bridge
-                .getActivity()
-                .runOnUiThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                //We also initialize intercom here just in case it has died. If Intercom is already set up, this won't do anything.
-                                setUpIntercom();
-                                Intercom.client().handlePushMessage();
-                                //Intercom.client().addUnreadConversationCountListener(onUnreadCountChange);
-                            }
-                        }
-                );
+            .getActivity()
+            .runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        //We also initialize intercom here just in case it has died. If Intercom is already set up, this won't do anything.
+                        setUpIntercom();
+                        Intercom.client().handlePushMessage();
+                        //Intercom.client().addUnreadConversationCountListener(onUnreadCountChange);
+                    }
+                }
+            );
     }
 
     @PluginMethod
@@ -104,32 +101,41 @@ public class IntercomPlugin extends Plugin {
         assert email != null;
 
         Registration registration = Registration.create().withUserId(userId).withEmail(email);
-        Intercom.client().loginIdentifiedUser(registration, new IntercomStatusCallback() {
-            @Override
-            public void onSuccess() {
-                call.resolve();
-            }
+        Intercom
+            .client()
+            .loginIdentifiedUser(
+                registration,
+                new IntercomStatusCallback() {
+                    @Override
+                    public void onSuccess() {
+                        call.resolve();
+                    }
 
-            @Override
-            public void onFailure(@NonNull IntercomError intercomError) {
-                call.reject(String.valueOf(intercomError));
-            }
-        });
+                    @Override
+                    public void onFailure(@NonNull IntercomError intercomError) {
+                        call.reject(String.valueOf(intercomError));
+                    }
+                }
+            );
     }
 
     @PluginMethod
     public void registerUnidentifiedUser(PluginCall call) {
-        Intercom.client().loginUnidentifiedUser(new IntercomStatusCallback() {
-            @Override
-            public void onSuccess() {
-                call.resolve();
-            }
+        Intercom
+            .client()
+            .loginUnidentifiedUser(
+                new IntercomStatusCallback() {
+                    @Override
+                    public void onSuccess() {
+                        call.resolve();
+                    }
 
-            @Override
-            public void onFailure(@NonNull IntercomError intercomError) {
-                call.reject(String.valueOf(intercomError));
-            }
-        });
+                    @Override
+                    public void onFailure(@NonNull IntercomError intercomError) {
+                        call.reject(String.valueOf(intercomError));
+                    }
+                }
+            );
     }
 
     @PluginMethod
@@ -157,17 +163,22 @@ public class IntercomPlugin extends Plugin {
         }
         Map<String, Object> customAttributes = mapFromJSON(call.getObject("customAttributes"));
         builder.withCustomAttributes(customAttributes);
-        Intercom.client().updateUser(builder.build(), new IntercomStatusCallback() {
-            @Override
-            public void onSuccess() {
-                call.resolve();
-            }
+        Intercom
+            .client()
+            .updateUser(
+                builder.build(),
+                new IntercomStatusCallback() {
+                    @Override
+                    public void onSuccess() {
+                        call.resolve();
+                    }
 
-            @Override
-            public void onFailure(@NonNull IntercomError intercomError) {
-                call.reject(String.valueOf(intercomError));
-            }
-        });
+                    @Override
+                    public void onFailure(@NonNull IntercomError intercomError) {
+                        call.reject(String.valueOf(intercomError));
+                    }
+                }
+            );
     }
 
     @PluginMethod
