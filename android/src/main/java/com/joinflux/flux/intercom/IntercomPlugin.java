@@ -101,41 +101,37 @@ public class IntercomPlugin extends Plugin {
         assert email != null;
 
         Registration registration = Registration.create().withUserId(userId).withEmail(email);
-        Intercom
-            .client()
-            .loginIdentifiedUser(
-                registration,
-                new IntercomStatusCallback() {
-                    @Override
-                    public void onSuccess() {
-                        call.resolve();
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull IntercomError intercomError) {
-                        call.reject(String.valueOf(intercomError));
-                    }
+        Intercom.client().loginIdentifiedUser(
+            registration,
+            new IntercomStatusCallback() {
+                @Override
+                public void onSuccess() {
+                    call.resolve();
                 }
-            );
+
+                @Override
+                public void onFailure(@NonNull IntercomError intercomError) {
+                    call.reject(String.valueOf(intercomError));
+                }
+            }
+        );
     }
 
     @PluginMethod
     public void registerUnidentifiedUser(PluginCall call) {
-        Intercom
-            .client()
-            .loginUnidentifiedUser(
-                new IntercomStatusCallback() {
-                    @Override
-                    public void onSuccess() {
-                        call.resolve();
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull IntercomError intercomError) {
-                        call.reject(String.valueOf(intercomError));
-                    }
+        Intercom.client().loginUnidentifiedUser(
+            new IntercomStatusCallback() {
+                @Override
+                public void onSuccess() {
+                    call.resolve();
                 }
-            );
+
+                @Override
+                public void onFailure(@NonNull IntercomError intercomError) {
+                    call.reject(String.valueOf(intercomError));
+                }
+            }
+        );
     }
 
     @PluginMethod
@@ -163,22 +159,20 @@ public class IntercomPlugin extends Plugin {
         }
         Map<String, Object> customAttributes = mapFromJSON(call.getObject("customAttributes"));
         builder.withCustomAttributes(customAttributes);
-        Intercom
-            .client()
-            .updateUser(
-                builder.build(),
-                new IntercomStatusCallback() {
-                    @Override
-                    public void onSuccess() {
-                        call.resolve();
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull IntercomError intercomError) {
-                        call.reject(String.valueOf(intercomError));
-                    }
+        Intercom.client().updateUser(
+            builder.build(),
+            new IntercomStatusCallback() {
+                @Override
+                public void onSuccess() {
+                    call.resolve();
                 }
-            );
+
+                @Override
+                public void onFailure(@NonNull IntercomError intercomError) {
+                    call.reject(String.valueOf(intercomError));
+                }
+            }
+        );
     }
 
     @PluginMethod

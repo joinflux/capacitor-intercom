@@ -2,10 +2,7 @@ import type { PluginListenerHandle } from '@capacitor/core';
 
 export interface IntercomPlugin {
   boot(options: IntercomSettings): Promise<void>;
-  registerIdentifiedUser(options: {
-    userId?: string;
-    email?: string;
-  }): Promise<void>;
+  registerIdentifiedUser(options: { userId?: string; email?: string }): Promise<void>;
   registerUnidentifiedUser(): Promise<void>;
   updateUser(options: IntercomUserUpdateOptions): Promise<void>;
   logout(): Promise<void>;
@@ -24,10 +21,7 @@ export interface IntercomPlugin {
   sendPushTokenToIntercom(options: { value: string }): Promise<void>;
   receivePush(notification: IntercomPushNotificationData): Promise<void>;
   unreadConversationCount(): Promise<UnreadConversationCount>;
-  addListener(
-    eventName: 'onUnreadCountChange',
-    listenerFunc: UnreadCountChangeListener,
-  ): Promise<PluginListenerHandle>;
+  addListener(eventName: 'onUnreadCountChange', listenerFunc: UnreadCountChangeListener): Promise<PluginListenerHandle>;
 }
 
 export interface IntercomPushNotificationData {
@@ -60,9 +54,7 @@ export interface UnreadConversationCount {
   value?: string;
 }
 
-export type UnreadCountChangeListener = (
-  state: UnreadConversationCount,
-) => void;
+export type UnreadCountChangeListener = (state: UnreadConversationCount) => void;
 
 export interface IntercomSettings {
   // messenger attributes

@@ -31,10 +31,7 @@ export class IntercomWeb extends WebPlugin implements IntercomPlugin {
     return Promise.resolve();
   }
 
-  async registerIdentifiedUser(options: {
-    userId?: string;
-    email?: string;
-  }): Promise<void> {
+  async registerIdentifiedUser(options: { userId?: string; email?: string }): Promise<void> {
     options = objectKeysCamelToSnakeCase(options);
     window.Intercom?.('update', options);
     return Promise.resolve();

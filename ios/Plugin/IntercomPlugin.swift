@@ -6,12 +6,15 @@ import Intercom
 /// here: https://capacitorjs.com/docs/plugins/ios
 @objc(IntercomPlugin)
 public class IntercomPlugin: CAPPlugin {
-    public override func load() {
+    override public func load() {
         let config = getConfig()
-        let apiKey = config.getString("iosApiKey")
-        let appId = config.getString("iosAppId")
+        guard let apiKey = config.getString("iosApiKey"),
+              let appId = config.getString("iosAppId") else {
+            print("Intercom: Missing iosApiKey or iosAppId in configuration")
+            return
+        }
 
-        Intercom.setApiKey(apiKey!, forAppId: appId!)
+        Intercom.setApiKey(apiKey, forAppId: appId)
 
         NotificationCenter.default.addObserver(
             self,
@@ -97,14 +100,15 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func logEvent(_ call: CAPPluginCall) {
-        let eventName = call.getString("name")
-        let metaData = call.getObject("data")
+        guard let eventName = call.getString("name") else {
+            call.resolve()
+            return
+        }
 
-        if eventName != nil && metaData != nil {
-            Intercom.logEvent(withName: eventName!, metaData: metaData!)
-
-        } else if eventName != nil {
-            Intercom.logEvent(withName: eventName!)
+        if let metaData = call.getObject("data") {
+            Intercom.logEvent(withName: eventName, metaData: metaData)
+        } else {
+            Intercom.logEvent(withName: eventName)
         }
 
         call.resolve()
@@ -164,22 +168,20 @@ public class IntercomPlugin: CAPPlugin {
     }
 
     @objc func setUserHash(_ call: CAPPluginCall) {
-        let hmac = call.getString("hmac")
-
-        if hmac != nil {
-            Intercom.setUserHash(hmac!)
-            call.resolve()
-            print("hmac sent to intercom")
-        } else {
+        guard let hmac = call.getString("hmac") else {
             call.reject("No hmac found. Read intercom docs and generate it.")
+            return
         }
+
+        Intercom.setUserHash(hmac)
+        call.resolve()
+        print("hmac sent to intercom")
     }
 
     @objc func setBottomPadding(_ call: CAPPluginCall) {
 
         if let value = call.getString("value"),
-            let number = NumberFormatter().number(from: value)
-        {
+            let number = NumberFormatter().number(from: value) {
 
             Intercom.setBottomPadding(CGFloat(truncating: number))
             call.resolve()
